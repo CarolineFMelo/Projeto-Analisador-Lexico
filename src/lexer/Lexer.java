@@ -26,6 +26,25 @@ public class Lexer {
 		reserve(Type.Char);
 		reserve(Type.Bool);
 		reserve(Type.Float);
+		
+		reserve(new Word("programa", Tag.PROGRAMA));
+		reserve(new Word("inicio", Tag.INICIO));
+		reserve(new Word("fimprograma", Tag.FIMPROGRAMA));
+		reserve(new Word("leia", Tag.LEIA));
+		reserve(new Word("escreva", Tag.ESCREVA));
+		reserve(new Word("se", Tag.SE));
+		reserve(new Word("entao", Tag.ENTAO));
+		reserve(new Word("senao", Tag.SENAO));
+		reserve(new Word("fimse", Tag.FIMSE));
+		reserve(new Word("enquanto", Tag.ENQUANTO));
+		reserve(new Word("faca", Tag.FACA));
+		reserve(new Word("fimenquanto", Tag.FIMENQUANTO));
+		reserve(new Word("div", Tag.DIVISAO));
+		reserve(new Word("e", Tag.E));
+		reserve(new Word("ou", Tag.OU));
+		reserve(new Word("nao", Tag.NAO));
+		reserve(new Word("inteiro", Tag.INTEIRO));
+		reserve(new Word("logico", Tag.LOGICO));
 	}
 	
 	void readch() throws IOException {
@@ -70,39 +89,54 @@ public class Lexer {
 				return new Token('|');
 			}
 		case '=':
-			if(readch('=')) {
-				return Word.eq;
+			if(readch(' ')) {
+				return Word.igual;
 			}
 			else {
 				return new Token('=');
 			}
 		case '!':
-			if(readch('!')) {
+			if(readch('=')) {
 				return Word.ne;
 			}
 			else {
 				return new Token('!');
 			}
 		case '<':
-			if(readch('<')) {
+			if(readch('=')) {
 				return Word.le;
 			}
+			else if(readch('-')) {
+				return Word.recebe;
+			}
 			else {
-				return new Token('<');
+				return Word.menorque;
 			}
 		case '>':
-			if(readch('>')) {
+			if(readch('=')) {
 				return Word.ge;
 			}
 			else {
-				return new Token('>');
+				return Word.maiorque;
+			}
+		case '+':
+			if(readch(' ')) {
+				return Word.mais;
+			}
+		case '-':
+			if(readch(' ')) {
+				return Word.menos;
+			}
+		case '*':
+			if(readch(' ')) {
+				return Word.multiplicacao;
 			}
 		}
 		
 		if(Character.isDigit(peek)) {
 			int v = 0;
 			do {
-				 v = 10 * v + Character.digit(peek,  10);
+				 v = 10 * v + Character.digit(peek, 10);
 				 readch();
 			 }
 			 while(Character.isDigit(peek));
@@ -117,7 +151,7 @@ public class Lexer {
 			 for(; ;) {
 				 readch();
 				 
-				 if(! Character.isDigit(peek)) {
+				 if(!Character.isDigit(peek)) {
 					 break;
 				 }
 				 x = x + Character.digit(peek, 10) / d;
@@ -141,7 +175,7 @@ public class Lexer {
 				return w;
 			}
 			w = new Word(s, Tag.ID);
-			words.put(s,  w);
+			words.put(s, w);
 			return w;
 		}
 		Token tok = new Token(peek);
