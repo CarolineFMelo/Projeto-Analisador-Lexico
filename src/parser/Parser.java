@@ -58,7 +58,7 @@ public class Parser {
 		while(look.tag == Tag.BASIC) {
 			Type p = type();
 			Token tok = look;
-			match(Tag.ID);
+			match(Tag.T_IDENTIF);
 			match(';');
 			Id id = new Id((Word) tok, p, used);
 			top .put(tok, id);
@@ -81,7 +81,7 @@ public class Parser {
 	Type dims(Type p) throws IOException {
 		match('[');
 		Token tok = look;
-		match(Tag.NUM);
+		match(Tag.T_NUMERO);
 		match(']');
 		
 		if(look.tag == '[') {
@@ -161,7 +161,7 @@ public class Parser {
 	Stmt assign() throws IOException {
 		Stmt stmt;
 		Token t = look;
-		match(Tag.ID);
+		match(Tag.T_IDENTIF);
 		Id id = top.get(t);
 		
 		if(id == null) {
@@ -275,7 +275,7 @@ public class Parser {
 			x = bool();
 			match(')');
 			return x;
-		case Tag.NUM:
+		case Tag.T_NUMERO:
 			x = new Constant(look, Type.Int);
 			move();
 			return x;
@@ -294,7 +294,7 @@ public class Parser {
 		default:
 			error("syntax error");
 			return x;
-		case Tag.ID:
+		case Tag.T_IDENTIF:
 			String s = look.toString();
 			Id id = top.get(look);
 			if(id == null) {

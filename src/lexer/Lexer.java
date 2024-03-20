@@ -8,6 +8,7 @@ public class Lexer {
 
 	public static int line = 1;
 	char peek = ' ';
+	char oldPeek = ' ';
 	Hashtable<String, Word> words = new Hashtable<String, Word>();
 	
 	void reserve(Word w) {
@@ -27,28 +28,31 @@ public class Lexer {
 		reserve(Type.Bool);
 		reserve(Type.Float);
 		
-		reserve(new Word("programa", Tag.PROGRAMA));
-		reserve(new Word("inicio", Tag.INICIO));
-		reserve(new Word("fimprograma", Tag.FIMPROGRAMA));
-		reserve(new Word("leia", Tag.LEIA));
-		reserve(new Word("escreva", Tag.ESCREVA));
-		reserve(new Word("se", Tag.SE));
-		reserve(new Word("entao", Tag.ENTAO));
-		reserve(new Word("senao", Tag.SENAO));
-		reserve(new Word("fimse", Tag.FIMSE));
-		reserve(new Word("enquanto", Tag.ENQUANTO));
-		reserve(new Word("faca", Tag.FACA));
-		reserve(new Word("fimenquanto", Tag.FIMENQUANTO));
-		reserve(new Word("div", Tag.DIVISAO));
-		reserve(new Word("e", Tag.E));
-		reserve(new Word("ou", Tag.OU));
-		reserve(new Word("nao", Tag.NAO));
-		reserve(new Word("inteiro", Tag.INTEIRO));
-		reserve(new Word("logico", Tag.LOGICO));
+		reserve(new Word("programa", Tag.T_PROGRAMA));
+		reserve(new Word("inicio", Tag.T_INICIO));
+		reserve(new Word("fimprograma", Tag.T_FIM));
+		reserve(new Word("leia", Tag.T_LEIA));
+		reserve(new Word("escreva", Tag.T_ESCREVA));
+		reserve(new Word("se", Tag.T_SE));
+		reserve(new Word("entao", Tag.T_ENTAO));
+		reserve(new Word("senao", Tag.T_SENAO));
+		reserve(new Word("fimse", Tag.T_FIMSE));
+		reserve(new Word("enquanto", Tag.T_ENQTO));
+		reserve(new Word("faca", Tag.T_FACA));
+		reserve(new Word("fimenquanto", Tag.T_FIMENQTO));
+		reserve(new Word("div", Tag.T_DIV));
+		reserve(new Word("e", Tag.T_E));
+		reserve(new Word("ou", Tag.T_OU));
+		reserve(new Word("nao", Tag.T_NAO));
+		reserve(new Word("inteiro", Tag.T_INTEIRO));
+		reserve(new Word("logico", Tag.T_LOGICO));
+		reserve(new Word("V", Tag.T_V));
+		reserve(new Word("F", Tag.T_F));
 	}
 	
 	void readch() throws IOException {
 		peek = (char)System.in.read();
+		oldPeek = peek;
 	}
 	
 	boolean readch(char c) throws IOException {
@@ -58,6 +62,16 @@ public class Lexer {
 			return false;
 		}
 		peek = ' ';
+		return true;
+	}
+	
+	boolean readchAgain(char c) throws IOException {
+		peek = (char)System.in.read();
+		
+		if(oldPeek != c) {
+			return false;
+		}
+		oldPeek = ' ';
 		return true;
 	}
 	
@@ -73,6 +87,7 @@ public class Lexer {
 				break;
 			}
 		}
+		
 		switch(peek) {
 		case '&':
 			if(readch('&')) {
@@ -106,7 +121,7 @@ public class Lexer {
 			if(readch('=')) {
 				return Word.le;
 			}
-			else if(readch('-')) {
+			else if(readchAgain('-')) {
 				return Word.recebe;
 			}
 			else {
@@ -130,6 +145,43 @@ public class Lexer {
 		case '*':
 			if(readch(' ')) {
 				return Word.multiplicacao;
+			}
+		case '(':
+			String body = "\\s*";
+			readch();
+			if(Character.toString(peek).matches(body)) {
+				return Word.abreparenteses;
+			}
+			else {
+				return new Token('(');
+			}
+		case ')':
+			body = "\\s*";
+			readch();
+			if(Character.toString(peek).matches(body)) {
+				return Word.fechaparenteses;
+			}
+			else {
+				return new Token(')');
+			}
+		case '/':
+			if(readch('/')) { 
+				while(peek != '\n') {
+					readch();
+				}
+				//System.out.println("one line comment");
+			}
+			else if(readchAgain('*')) {
+				while(peek != '*') {
+					readch();
+				}
+				while(peek != '/') {
+					readch();
+				}
+				//System.out.println("multi-line comment");
+			}
+			else {
+				return new Token('/');
 			}
 		}
 		
@@ -174,7 +226,7 @@ public class Lexer {
 			if(w != null) {
 				return w;
 			}
-			w = new Word(s, Tag.ID);
+			w = new Word(s, Tag.T_IDENTIF);
 			words.put(s, w);
 			return w;
 		}

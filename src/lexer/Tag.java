@@ -1,17 +1,32 @@
 package lexer;
+import java.lang.reflect.Field;
 
 public class Tag {
 	
 	public final static int AND = 256, BASIC = 257, BREAK = 258, DO = 259, 
-			ELSE = 260, EQ = 261, FALSE = 262, GE = 263, ID = 264, IF = 265, 
-			INDEX = 266, LE = 267, MINUS = 268, NE = 269, NUM = 270, OR = 271, 
+			ELSE = 260, EQ = 261, FALSE = 262, GE = 263, T_IDENTIF = 264, IF = 265, 
+			INDEX = 266, LE = 267, MINUS = 268, NE = 269, T_NUMERO = 270, OR = 271, 
 			REAL = 272, TEMP = 273, TRUE = 274, WHILE = 275, 
 			
-			PROGRAMA = 276, INICIO = 277, FIMPROGRAMA = 278, LEIA = 279,
-			ESCREVA = 280, SE = 281, ENTAO = 282, SENAO = 283, FIMSE = 284, ENQUANTO = 285, 
-			FACA = 286, FIMENQUANTO = 287, MAIS = 288, MENOS = 289, MULTIPLICACAO = 290, 
-			DIVISAO = 291, MAIORQUE = 292, MENORQUE = 293, E = 294, OU = 295, NAO = 296, 
-			RECEBE = 297, ABREPARENTESES = 298, FECHAPARENTESES = 299, INTEIRO = 300,
-			LOGICO = 301, VERDADEIRO = 302, FALSO = 303, IGUAL = 304;
+			T_PROGRAMA = 276, T_INICIO = 277, T_FIM = 278, T_LEIA = 279,
+			T_ESCREVA = 280, T_SE = 281, T_ENTAO = 282, T_SENAO = 283, T_FIMSE = 284, T_ENQTO = 285, 
+			T_FACA = 286, T_FIMENQTO = 287, T_MAIS = 288, T_MENOS = 289, T_VEZES = 290, 
+			T_DIV = 291, T_MAIOR = 292, T_MENOR = 293, T_E = 294, T_OU = 295, T_NAO = 296, 
+			T_ATRIB = 297, T_ABRE = 298, T_FECHA = 299, T_INTEIRO = 300,
+			T_LOGICO = 301, T_V = 302, T_F = 303, T_IGUAL = 304;
+	
+	
+	public void getNameTag(Object obj, int value) throws IllegalAccessException {
+		Field[] fields = Tag.class.getDeclaredFields();
+		
+		for(Field field : fields) {
+		    field.setAccessible(true);
+		    Object fieldValue = field.get(obj);
+		    
+		    if(fieldValue instanceof Integer && (int) fieldValue == value) {
+		    	System.out.println(field.getName());
+		    }
+	    }
+	}
 			
 }

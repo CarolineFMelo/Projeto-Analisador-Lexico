@@ -19,13 +19,13 @@ public class Word extends Token {
 			minus = new Word("minus", Tag.MINUS), True = new Word("true", Tag.TRUE),
 			False = new Word("false", Tag.FALSE), temp = new Word("t", Tag.TEMP),
 			
-			mais = new Word("+", Tag.MAIS), menos = new Word("-", Tag.MENOS),
-			multiplicacao = new Word("*", Tag.MULTIPLICACAO), divisao = new Word("div", Tag.DIVISAO),
-			maiorque = new Word(">", Tag.MAIORQUE), menorque = new Word("<", Tag.MENORQUE),
-			e = new Word("e", Tag.E), ou = new Word("ou", Tag.OU), nao = new Word("nao", Tag.NAO),
-			recebe = new Word("<-", Tag.RECEBE), abreparenteses = new Word("(", Tag.ABREPARENTESES), 
-			fechaparenteses = new Word(")", Tag.FECHAPARENTESES), inteiro = new Word("inteiro", Tag.INTEIRO),
-			logico = new Word("logico", Tag.LOGICO), verdadeiro = new Word("V", Tag.VERDADEIRO),
-			falso = new Word("F", Tag.FALSO), igual = new Word("=", Tag.IGUAL);
+			mais = new Word("+", Tag.T_MAIS), menos = new Word("-", Tag.T_MENOR),
+			multiplicacao = new Word("*", Tag.T_VEZES), divisao = new Word("div", Tag.T_DIV),
+			maiorque = new Word(">", Tag.T_MAIOR), menorque = new Word("<", Tag.T_MENOR),
+			e = new Word("e", Tag.T_E), ou = new Word("ou", Tag.T_OU), nao = new Word("nao", Tag.T_NAO),
+			recebe = new Word("<-", Tag.T_ATRIB), abreparenteses = new Word("(", Tag.T_ABRE), 
+			fechaparenteses = new Word(")", Tag.T_FECHA), inteiro = new Word("inteiro", Tag.T_INTEIRO),
+			logico = new Word("logico", Tag.T_LOGICO), verdadeiro = new Word("V", Tag.T_V),
+			falso = new Word("F", Tag.T_F), igual = new Word("=", Tag.T_IGUAL);
 	
 }
