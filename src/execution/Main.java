@@ -11,7 +11,7 @@ public class Main {
 		
 		while(tok.tag != 278) {
 			tok = lex.scan();
-			tag.getNameTag(tag, tok.tag);
+			tag.getNameTag(tag, tok.tag, tok);
 		}
 	}
 	

@@ -16,7 +16,7 @@ public class Tag {
 			T_LOGICO = 301, T_V = 302, T_F = 303, T_IGUAL = 304;
 	
 	
-	public void getNameTag(Object obj, int value) throws IllegalAccessException {
+	public void getNameTag(Object obj, int value, Token word) throws IllegalAccessException {
 		Field[] fields = Tag.class.getDeclaredFields();
 		
 		for(Field field : fields) {
@@ -24,7 +24,7 @@ public class Tag {
 		    Object fieldValue = field.get(obj);
 		    
 		    if(fieldValue instanceof Integer && (int) fieldValue == value) {
-		    	System.out.println(field.getName());
+		    	System.out.println(word + ": " + field.getName() + " " + fieldValue);
 		    }
 	    }
 	}
